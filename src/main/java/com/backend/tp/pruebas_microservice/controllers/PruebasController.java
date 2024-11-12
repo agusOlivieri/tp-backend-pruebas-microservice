@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/pruebas")
 public class PruebasController {
     @Autowired
     private PruebaService pruebaService;
@@ -23,7 +23,7 @@ public class PruebasController {
         return ResponseEntity.ok("Endpoint accesible");
     }
 
-    @PostMapping("/pruebas")
+    @PostMapping
     public ResponseEntity<Object> crearPrueba(@RequestBody PruebaDTO request) {
         try {
             System.out.println("Request: " + request.getVehiculoId());
@@ -38,23 +38,32 @@ public class PruebasController {
         }
     }
 
-    @GetMapping("/pruebas")
+    @GetMapping
     public ResponseEntity<Object> mostrarPruebasEnCurso() {
         List<Prueba> pruebasEnCurso = pruebaService.getPruebasEnCurso();
 
-        if (pruebasEnCurso.isEmpty()) {
-            String errorResponse = "Error al buscar las pruebas o no hay pruebas en curso";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-        }
+//        if (pruebasEnCurso.isEmpty()) {
+//            String errorResponse = "Error al buscar las pruebas o no hay pruebas en curso";
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+//        }
 
         return ResponseEntity.status(HttpStatus.OK).body(pruebasEnCurso);
     }
 
-    @GetMapping("/finalizar")
+    @PostMapping("/finalizar")
     public ResponseEntity<Object> finalizarPrueba(@RequestParam Integer pruebaId, @RequestParam String comentarios) {
         try {
-            Prueba pruebaFinalizada = pruebaService.finalizarPrueba(pruebaId, comentarios);
-            return ResponseEntity.ok(pruebaFinalizada);
+            // validar si la prueba esta en curso
+            if (pruebaService.esEnCurso(pruebaId)) {
+                Prueba pruebaFinalizada = pruebaService.finalizarPrueba(pruebaId, comentarios);
+                return ResponseEntity.ok(pruebaFinalizada);
+            }
+
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Esa prueba no esta en curso");
+
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(errorResponse);
+
         } catch(Exception e) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "No se pudo finalizar la prueba");
@@ -63,8 +72,4 @@ public class PruebasController {
         }
     }
 
-    @GetMapping("/notificar-promociones")
-    public ResponseEntity<Object> notificarPromociones() {
-        -.....
-    }
 }

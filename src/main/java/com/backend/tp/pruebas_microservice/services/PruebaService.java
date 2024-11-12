@@ -82,4 +82,9 @@ public class PruebaService {
 
         return pruebaRepository.save(prueba);
     }
+
+    public boolean esEnCurso(Integer pruebaId) {
+        return pruebaRepository.existsByIdAndEstado(pruebaId, "en curso");
+    }
+
 }

@@ -15,4 +15,6 @@ public interface PruebaRepository extends JpaRepository<Prueba, Integer> {
     List<Prueba> findByEstado(String estado);
 
     boolean existsByIdAndEstado(Integer id, String estado);
+
+    List<Prueba> findByVehiculo(Vehiculo vehiculo);
 }

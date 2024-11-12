@@ -87,4 +87,10 @@ public class PruebaService {
         return pruebaRepository.existsByIdAndEstado(pruebaId, "en curso");
     }
 
+    public List<Prueba> getPruebasPorVehiculo(Integer vehiculoId) {
+        Vehiculo vehiculo = vehiculoService.getVehiculo(vehiculoId);
+
+        return pruebaRepository.findByVehiculo(vehiculo);
+    }
+
 }

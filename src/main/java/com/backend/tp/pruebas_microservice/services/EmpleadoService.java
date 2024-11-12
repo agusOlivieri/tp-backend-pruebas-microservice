@@ -16,5 +16,8 @@ public class EmpleadoService {
         return empleadoRepository.findAll();
     }
 
+    public Empleado getByLegajo(Integer empleadoLegajo) { return empleadoRepository.findByLegajo(empleadoLegajo); };
+
     public Empleado getEmpleado(Integer empleadoId) { return empleadoRepository.findByLegajo(empleadoId); }
+
 }

@@ -1,5 +1,6 @@
 package com.backend.tp.pruebas_microservice.services;
 
+import com.backend.tp.pruebas_microservice.entities.Prueba;
 import com.backend.tp.pruebas_microservice.entities.Vehiculo;
 import com.backend.tp.pruebas_microservice.repositories.PruebaRepository;
 import com.backend.tp.pruebas_microservice.repositories.VehiculoRepository;
@@ -23,6 +24,14 @@ public class VehiculoService {
     public Vehiculo getVehiculo(Integer vehiculoId) { return vehiculoRepository.findById(vehiculoId).orElseThrow(() -> new RuntimeException("Vehículo no encontrado")); }
 
     public boolean isVehiculoEnPrueba(Integer vehiculoId) {
-        return pruebaRepository.existsByVehiculoIdAndEstado(vehiculoId, "en curso");
+        List<Prueba> pruebasEnCurso = pruebaRepository.findByEstado("en curso");
+
+        for(Prueba prueba: pruebasEnCurso) {
+            if (prueba.getVehiculo().getId().equals(vehiculoId)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

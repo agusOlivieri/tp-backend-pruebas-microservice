@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PruebaService {
@@ -27,7 +28,7 @@ public class PruebaService {
 
     @Transactional
     public Prueba crearPrueba(Integer vehiculoId, Integer interesadoId, Integer empleadoId, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) throws Exception {
-        System.out.println(vehiculoId);
+        System.out.println("Vehiculo ID: " + vehiculoId);
         System.out.println(interesadoId);
         System.out.println(empleadoId);
         System.out.println(fechaHoraFin);
@@ -40,6 +41,10 @@ public class PruebaService {
         System.out.println(interesado);
         System.out.println(vehiculo);
         System.out.println(empleado);
+
+        boolean esVehiculoEnPrueba = vehiculoService.isVehiculoEnPrueba(vehiculoId);
+
+        System.out.println(esVehiculoEnPrueba);
 
         // validar si la licencia de conducir esta vencida
         if (interesado.getFechaVencimientoLicencia().isBefore(LocalDateTime.now())) {
@@ -54,15 +59,19 @@ public class PruebaService {
         }
 
         // validar si el vehiculo que se quiere usar ya está siendo usado en otra prueba
-//        if (vehiculoService.isVehiculoEnPrueba(vehiculoId)) {
-//            System.out.println("Se llego hasta 3");
-//            throw new Exception("El vehículo ya está siendo usado en otra prueba.");
-//        }
+        if (vehiculoService.isVehiculoEnPrueba(vehiculoId)) {
+            System.out.println("Se llego hasta 3");
+            throw new Exception("El vehículo ya está siendo usado en otra prueba.");
+        }
 
         // creamos la prueba
+        System.out.println("Se llego hasta 4");
         Prueba prueba = new Prueba(vehiculo, interesado, empleado, fechaHoraInicio, fechaHoraFin, "", "en curso");
 
         return pruebaRepository.save(prueba);
+    }
 
+    public List<Prueba> getPruebasEnCurso() {
+        return pruebaRepository.findByEstado("en curso");
     }
 }

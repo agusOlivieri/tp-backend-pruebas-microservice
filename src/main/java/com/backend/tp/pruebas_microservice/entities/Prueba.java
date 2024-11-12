@@ -12,7 +12,7 @@ public class Prueba {
     @Column(name = "ID")
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_VEHICULO")
     private Vehiculo vehiculo;
 
@@ -20,7 +20,7 @@ public class Prueba {
     @JoinColumn(name = "ID_INTERESADO")
     private Interesado interesado;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ID_EMPLEADO")
     private Empleado empleado;
 

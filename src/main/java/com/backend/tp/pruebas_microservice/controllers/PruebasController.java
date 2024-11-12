@@ -42,11 +42,6 @@ public class PruebasController {
     public ResponseEntity<Object> mostrarPruebasEnCurso() {
         List<Prueba> pruebasEnCurso = pruebaService.getPruebasEnCurso();
 
-//        if (pruebasEnCurso.isEmpty()) {
-//            String errorResponse = "Error al buscar las pruebas o no hay pruebas en curso";
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-//        }
-
         return ResponseEntity.status(HttpStatus.OK).body(pruebasEnCurso);
     }
 

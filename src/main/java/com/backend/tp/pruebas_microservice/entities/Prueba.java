@@ -104,4 +104,9 @@ public class Prueba {
     public void setComentarios(String comentarios) {
         this.comentarios = comentarios;
     }
+
+    public void finalizar(String comentarios) {
+        this.estado = "finalizada";
+        this.comentarios = comentarios;
+    }
 }

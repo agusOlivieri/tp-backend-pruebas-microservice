@@ -74,4 +74,12 @@ public class PruebaService {
     public List<Prueba> getPruebasEnCurso() {
         return pruebaRepository.findByEstado("en curso");
     }
+
+    public Prueba finalizarPrueba(Integer pruebaId, String comentarios) throws Exception{
+        Prueba prueba = pruebaRepository.findById(pruebaId).orElseThrow(() -> new Exception("Prueba no encontrada"));
+
+        prueba.finalizar(comentarios);
+
+        return pruebaRepository.save(prueba);
+    }
 }

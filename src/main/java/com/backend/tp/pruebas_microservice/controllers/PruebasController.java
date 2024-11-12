@@ -6,10 +6,7 @@ import com.backend.tp.pruebas_microservice.services.PruebaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,5 +50,21 @@ public class PruebasController {
         return ResponseEntity.status(HttpStatus.OK).body(pruebasEnCurso);
     }
 
+    @GetMapping("/finalizar")
+    public ResponseEntity<Object> finalizarPrueba(@RequestParam Integer pruebaId, @RequestParam String comentarios) {
+        try {
+            Prueba pruebaFinalizada = pruebaService.finalizarPrueba(pruebaId, comentarios);
+            return ResponseEntity.ok(pruebaFinalizada);
+        } catch(Exception e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "No se pudo finalizar la prueba");
+            errorResponse.put("detalle", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
 
+    @GetMapping("/notificar-promociones")
+    public ResponseEntity<Object> notificarPromociones() {
+        -.....
+    }
 }
